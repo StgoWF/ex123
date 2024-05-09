@@ -1,6 +1,10 @@
 // config/config.js
 require('dotenv').config();  // Asegura que se puedan usar variables de entorno
-
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'production';
+}
+console.log("Environment:", process.env.NODE_ENV);
+console.log("JAWSDB_URL:", process.env.JAWSDB_URL);
 module.exports = {
   development: {
     username: process.env.DB_USER,
