@@ -5,6 +5,8 @@ if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'production';
 }
 console.log("Environment:", process.env.NODE_ENV);
+console.log("JAWSDB_URL:", process.env.JAWSDB_URL);
+
 
 
 const path = require('path');
@@ -16,7 +18,8 @@ const Sequelize = require('sequelize');
 const config = require('./config/config'); // Ensure the path to config is correct
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+
 
 // Define the environment based on NODE_ENV or default to 'development'
 const env = process.env.NODE_ENV || 'development';

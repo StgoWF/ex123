@@ -17,7 +17,7 @@ module.exports = {
     dialect: 'mysql',
     migrationStorageTableName: "sequelize_migrations",
     define: {
-      timestamps: false  // Aplica lo mismo para el entorno de producción
+      timestamps: true  // Aplica lo mismo para el entorno de producción
     },
     dialectOptions: {
       ssl: {
