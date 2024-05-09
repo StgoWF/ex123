@@ -1,0 +1,28 @@
+<div class="post">
+    <div class="post-content">
+        <h2 class="post-title">{{post.title}}</h2>
+        <p>{{post.content}}</p>
+    </div>
+
+    {{#if post.Comments}}
+        <div class="comments-section">
+            <h3 class="comments-title">Comments</h3>
+            {{#each post.Comments}}
+                <div class="comment">
+                    <p>{{this.content}}</p>
+                    <small class="comment-author">Comment by: {{this.user.username}}</small>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <p class="no-comments">No comments yet. Be the first to comment!</p>
+    {{/if}}
+
+    <div class="add-comment-section">
+        <h3 class="add-comment-title">Add a Comment</h3>
+        <form action="/posts/comment/{{post.id}}" method="POST" class="comment-form">
+            <textarea name="content" required placeholder="Add a comment..." class="comment-textarea"></textarea>
+            <button type="submit" class="comment-submit">Submit</button>
+        </form>
+    </div>
+</div>

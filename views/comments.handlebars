@@ -1,0 +1,21 @@
+{{#each comments}}
+<div class="comment">
+    <p>{{this.content}}</p>
+    <small>Posted by {{this.User.username}} on {{formatDate this.createdAt}}</small>
+    {{#if this.editable}}
+    <!-- Button to edit comment -->
+    <button onclick="location.href='/comments/edit/{{this.id}}'">Edit</button>
+    <!-- Button to delete comment -->
+    <button onclick="location.href='/comments/delete/{{this.id}}'">Delete</button>
+    {{/if}}
+</div>
+{{/each}}
+
+<!-- Form to add a new comment -->
+<h3>Add a Comment</h3>
+<form action="/comments/add" method="POST">
+    <textarea name="content" required placeholder="Leave a comment..."></textarea>
+    <!-- Hidden input to store the post ID -->
+    <input type="hidden" name="postId" value="{{postId}}">
+    <button type="submit">Submit</button>
+</form>

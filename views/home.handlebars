@@ -1,0 +1,13 @@
+{{#each posts}}
+    <div class="post">
+        <div class="post-header">
+            <h2>{{this.title}}</h2>
+            <small>Posted by {{this.author.username}} on {{this.createdAt}}</small>
+        </div>
+        <p>{{this.content}}</p>
+        <!-- Button to view post details and comment -->
+        
+        <a href="/posts/{{this.id}}">Read More & Comment</a>
+    </div>
+    {{/each}}
+

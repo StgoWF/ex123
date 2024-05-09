@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tech Blog</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                {{#if logged_in}}
+                <li><a href="/logout">Logout</a></li>
+                {{else}}
+                <li><a href="/login">Login</a></li>
+                {{/if}}
+            </ul>
+        </nav>
+        <h1>The Tech Blog</h1>
+
+
+    </header>
+
+    {{{body}}}
+
+
+<script>
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const signupSuccess = urlParams.get('signup');
+    const loginSuccess = urlParams.get('login');
+    const signupError = urlParams.get('signupError');
+    const loginError = urlParams.get('loginError');
+
+    if (signupSuccess === 'success') {
+        alert('Signup successful!');
+    } else if (signupError) {
+        alert('Signup failed: ' + signupError);
+    }
+
+    if (loginSuccess === 'success') {
+        alert('Login successful!');
+    } else if (loginError) {
+        alert('Login failed: ' + loginError);
+    }
+}
+</script>
+
+
+</body>
+</html>
