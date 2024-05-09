@@ -1,9 +1,10 @@
 // controllers/homeRoutes.js
 const express = require('express');
+const methodOverride = require('method-override');
 const router = express.Router();
 const { User, Post, Comment } = require('../models');
 const bcrypt = require('bcrypt');
-
+router.use(methodOverride('_method'));
 // Route for the home page that displays all posts
 router.get('/', async (req, res) => {
     try {
@@ -331,47 +332,61 @@ router.post('/posts/comment/:id', async (req, res) => {
     }
 });
 
-// Update a comment
-router.put('/comments/:id', async (req, res) => {
-    try {
-        const updatedComment = await Comment.update(req.body, {
-            where: {
-                id: req.params.id,
-                userId: req.session.userId  // Only the creator of the comment can update it
-            }
-        });
+// POST route to update a comment
+router.post('/comments/update/:id', async (req, res) => {
+    if (!req.session.logged_in) {
+        res.redirect('/login');
+        return;
+    }
 
-        if (updatedComment) {
-            res.json({ message: 'Comment updated successfully' });
-        } else {
-            res.status(404).json({ message: 'Comment not found or user not authorized' });
+    try {
+        const result = await Comment.update(
+            { content: req.body.content },
+            {
+                where: {
+                    id: req.params.id,
+                    userId: req.session.user_id // Asegúrate de que solo el autor del comentario pueda actualizarlo
+                }
+            }
+        );
+
+        if (result == 0) {
+            res.status(404).send('Comment not found or user not authorized to edit');
+            return;
         }
-    } catch (error) {
-        console.error('Error updating comment:', error);
-        res.status(500).json({ message: 'Failed to update comment' });
+
+        res.redirect('/dashboard');  // Redirecciona al dashboard o a la página adecuada
+    } catch (err) {
+        res.status(500).json(err);
     }
 });
 
-// Delete a comment
-router.delete('/comments/:id', async (req, res) => {
+// POST route to delete a comment
+router.post('/comments/delete/:id', async (req, res) => {
+    if (!req.session.logged_in) {
+        res.redirect('/login');
+        return;
+    }
+
     try {
         const result = await Comment.destroy({
             where: {
                 id: req.params.id,
-                userId: req.session.userId  // Only the creator of the comment can delete it
+                userId: req.session.user_id // Asegúrate de que solo el autor del comentario pueda eliminarlo
             }
         });
 
-        if (result) {
-            res.json({ message: 'Comment deleted successfully' });
-        } else {
-            res.status(404).json({ message: 'Comment not found or user not authorized' });
+        if (result == 0) {
+            res.status(404).send('Comment not found or user not authorized to delete');
+            return;
         }
-    } catch (error) {
-        console.error('Error deleting comment:', error);
-        res.status(500).json({ message: 'Failed to delete comment' });
+
+        res.redirect('/dashboard');  // Redirecciona al dashboard o a la página adecuada
+    } catch (err) {
+        res.status(500).json(err);
     }
 });
+
 
 // // GET route for a specific route
 // router.get('/some-route', async (req, res) => {

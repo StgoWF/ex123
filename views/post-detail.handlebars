@@ -5,24 +5,34 @@
     </div>
 
     {{#if post.Comments}}
-        <div class="comments-section">
-            <h3 class="comments-title">Comments</h3>
-            {{#each post.Comments}}
-                <div class="comment">
-                    <p>{{this.content}}</p>
-                    <small class="comment-author">Comment by: {{this.user.username}}</small>
-                </div>
-            {{/each}}
+    <div class="comments-section">
+        <h3>Comments</h3>
+        {{#each post.Comments}}
+        <div class="comment">
+            <p>{{this.content}}</p>
+            <small>Comment by: {{this.user.username}}</small>
+            <form action="/comments/update/{{this.id}}" method="POST">
+                <input type="hidden" name="postId" value="{{../post.id}}">
+                <input type="text" name="content" value="{{this.content}}" required>
+                <button type="submit">Update Comment</button>
+            </form>
+            <!-- Form for deleting a comment -->
+            <form action="/comments/delete/{{this.id}}" method="POST">
+                <input type="hidden" name="postId" value="{{../post.id}}">
+                <button type="submit">Delete Comment</button>
+            </form>
         </div>
+        {{/each}}
+    </div>
     {{else}}
-        <p class="no-comments">No comments yet. Be the first to comment!</p>
+    <p>No comments yet. Be the first to comment!</p>
     {{/if}}
 
     <div class="add-comment-section">
-        <h3 class="add-comment-title">Add a Comment</h3>
-        <form action="/posts/comment/{{post.id}}" method="POST" class="comment-form">
-            <textarea name="content" required placeholder="Add a comment..." class="comment-textarea"></textarea>
-            <button type="submit" class="comment-submit">Submit</button>
+        <h3>Add a Comment</h3>
+        <form action="/posts/comment/{{post.id}}" method="POST">
+            <textarea name="content" required placeholder="Add a comment..."></textarea>
+            <button type="submit">Submit</button>
         </form>
     </div>
 </div>
